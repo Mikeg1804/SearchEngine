@@ -18,7 +18,7 @@ type User {
 }
 type Auth{
     token: ID!
-    user: User!
+    user: User
 }
 input BookInput {
     bookId: String,
@@ -33,7 +33,7 @@ type Query {
 }
 type Mutation {
     addUser(username:String!, email:String!, password:String!):Auth
-    saveBook (bookdata:BookInput):User
+    saveBook (bookData:BookInput):User
     login(email:String!, password:String!): Auth
     removeBook(bookId:String!):User 
 }
