@@ -45,7 +45,7 @@ const SearchBooks = () => {
 
     try {
       const response = await searchGoogleBooks(searchInput);
-
+   
       if (!response.ok) {
         throw new Error('something went wrong!');
       }
@@ -59,19 +59,19 @@ const SearchBooks = () => {
         description: book.volumeInfo.description,
         image: book.volumeInfo.imageLinks?.thumbnail || '',
       }));
-
+      console.log(bookData)
       setSearchedBooks(bookData);
       setSearchInput('');
     } catch (err) {
       console.error(err);
     }
   };
-  const [saveBook] = useMutation(SAVE_BOOK); // Initialize the mutation hook
+  const [saveBook] = useMutation(SAVE_BOOK); // Initialize the mutation hoo
 
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-  
+
     if (!token) {
       return false;
     }
@@ -79,9 +79,9 @@ const SearchBooks = () => {
     try {
  
       const response = await saveBook({
-        variables: { bookData: bookToSave }, // Pass the bookData as a variable
+        variables: { bookData: bookToSave, token }, // Pass the bookData as a variable
       });
-  
+
       if (!response.data.saveBook) {
         throw new Error('something went wrong!');
       }
