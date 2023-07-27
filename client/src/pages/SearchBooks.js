@@ -18,6 +18,7 @@ import { useMutation } from '@apollo/client';
 import { useQuery } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 
+// need to use context in here so user can be founde in the useMutation.
 
 const SearchBooks = () => {
   // create state for holding returned google api data
@@ -71,7 +72,8 @@ const SearchBooks = () => {
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-
+console.log(bookToSave);
+console.log(token);
     if (!token) {
       return false;
     }
@@ -79,9 +81,14 @@ const SearchBooks = () => {
     try {
  
       const response = await saveBook({
-        variables: { bookData: bookToSave, token }, // Pass the bookData as a variable
+        variables: { bookData: bookToSave },
+        context: {
+          headers: {
+            authorization: 'Bearer $token' 
+          }
+        } // Pass the bookData as a variable
       });
-
+console.log(response)
       if (!response.data.saveBook) {
         throw new Error('something went wrong!');
       }

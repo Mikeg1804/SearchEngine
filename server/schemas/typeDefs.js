@@ -13,7 +13,7 @@ type User {
     _id: ID!
     username: String! 
     email: String
-    savedbooks: [Book]
+    saveBook: [Book]
     bookCount: Int
 }
 type Auth{

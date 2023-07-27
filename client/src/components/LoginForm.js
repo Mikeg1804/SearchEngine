@@ -20,7 +20,7 @@ const LoginForm = () => {
   };
 
   const [loginUserMutation, { loading }] = useMutation(LOGIN_USER);
-  
+  console.log(loading);
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -33,14 +33,15 @@ const LoginForm = () => {
 
     try {
       const response = await loginUserMutation({
-        variables: userFormData,
+        variables: userFormData
       });
+      console.log(response)
 
-      if (!response.data.loginUser.ok) {
+      if (response.length=== 0) {
         throw new Error('something went wrong!');
       }
 
-      const { token, user } = response.data.loginUser;
+      const { token, user } = response;
       console.log(user);
       Auth.login(token);
     } catch (err) {

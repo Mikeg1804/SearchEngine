@@ -22,7 +22,6 @@ export const SAVE_BOOK = gql`
       _id
       username
       email
-      password
       saveBook{
         bookId
         title
