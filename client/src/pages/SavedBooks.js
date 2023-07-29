@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { useQuery } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 import { REMOVE_BOOK } from '../utils/mutations';
@@ -16,14 +16,14 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const [userData, setUserData] = useState(null);
+
   const [removeBookMutation] = useMutation(REMOVE_BOOK);
-  // use this to determine if `useEffect()` hook needs to run again
+
   const { loading, error, data } = useQuery(GET_ME);
 
-  const userDataLength = Object.keys(userData).length;
 
-  useEffect(() => {
+console.log(data);
+
     const getUserData = async () => {
       try {
         const token = Auth.loggedIn() ? Auth.getToken() : null;
@@ -42,14 +42,11 @@ const SavedBooks = () => {
         }
 
      
-        setUserData(data);
       } catch (err) {
         console.error(err);
       }
     };
 
-    getUserData();
-  }, [userDataLength]);
 
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
@@ -72,7 +69,7 @@ const SavedBooks = () => {
     }
 
     const updatedUser = response.data.removeBook; // Assuming the GraphQL mutation returns the updated user data
-    setUserData(updatedUser);
+    // setUserData(updatedUser);
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {
@@ -81,9 +78,9 @@ const SavedBooks = () => {
   };
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
-    return <h2>LOADING...</h2>;
-  }
+  // if (!userDataLength) {
+  //   return <h2>LOADING...</h2>;
+  // }
 
   return (
     <>
@@ -94,12 +91,12 @@ const SavedBooks = () => {
       </div>
       <Container>
         <h2 className='pt-5'>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+          {data.savedBooks.length
+            ? `Viewing ${data.savedBooks.length} saved ${data.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <Row>
-          {userData.savedBooks.map((book) => {
+          {data.savedBooks.map((book) => {
             return (
               <Col md="4">
                 <Card key={book.bookId} border='dark'>

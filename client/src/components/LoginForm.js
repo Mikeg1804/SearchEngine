@@ -40,8 +40,8 @@ const LoginForm = () => {
       if (response.length=== 0) {
         throw new Error('something went wrong!');
       }
-
-      const { token, user } = response;
+console.log(response);
+      const { token, user } = response.data.login;
       console.log(user);
       Auth.login(token);
     } catch (err) {
